@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="dbpizzaModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="idCliente" />
+          </Key>
+          <Property Name="idCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="telefono" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="trabajador">
+          <Key>
+            <PropertyRef Name="rut" />
+          </Key>
+          <Property Name="rut" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="apellido" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="telefono" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="venta">
+          <Key>
+            <PropertyRef Name="idVenta" />
+            <PropertyRef Name="Trabajador_rut" />
+            <PropertyRef Name="Cliente_idCliente" />
+          </Key>
+          <Property Name="idVenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipopizza" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="tamanopizza" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="agregado2" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="tipobebida" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="tamanobebida" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Trabajador_rut" Type="int" Nullable="false" />
+          <Property Name="Cliente_idCliente" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_Venta_Cliente1">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="1" />
+          <End Role="venta" Type="Self.venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="idCliente" />
+            </Principal>
+            <Dependent Role="venta">
+              <PropertyRef Name="Cliente_idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Venta_Trabajador">
+          <End Role="trabajador" Type="Self.trabajador" Multiplicity="1" />
+          <End Role="venta" Type="Self.venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trabajador">
+              <PropertyRef Name="rut" />
+            </Principal>
+            <Dependent Role="venta">
+              <PropertyRef Name="Trabajador_rut" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbpizzaModelStoreContainer">
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbpizza" store:Type="Tables" />
+          <EntitySet Name="trabajador" EntityType="Self.trabajador" Schema="dbpizza" store:Type="Tables" />
+          <EntitySet Name="venta" EntityType="Self.venta" Schema="dbpizza" store:Type="Tables" />
+          <AssociationSet Name="fk_Venta_Cliente1" Association="Self.fk_Venta_Cliente1">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="venta" EntitySet="venta" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Venta_Trabajador" Association="Self.fk_Venta_Trabajador">
+            <End Role="trabajador" EntitySet="trabajador" />
+            <End Role="venta" EntitySet="venta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="dbpizzaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="idCliente" />
+          </Key>
+          <Property Name="idCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="venta" Relationship="Self.fk_Venta_Cliente1" FromRole="cliente" ToRole="venta" />
+        </EntityType>
+        <EntityType Name="trabajador">
+          <Key>
+            <PropertyRef Name="rut" />
+          </Key>
+          <Property Name="rut" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellido" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="venta" Relationship="Self.fk_Venta_Trabajador" FromRole="trabajador" ToRole="venta" />
+        </EntityType>
+        <EntityType Name="venta">
+          <Key>
+            <PropertyRef Name="idVenta" />
+            <PropertyRef Name="Trabajador_rut" />
+            <PropertyRef Name="Cliente_idCliente" />
+          </Key>
+          <Property Name="idVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipopizza" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tamanopizza" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="agregado2" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tipobebida" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tamanobebida" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Trabajador_rut" Type="Int32" Nullable="false" />
+          <Property Name="Cliente_idCliente" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="cliente" Relationship="Self.fk_Venta_Cliente1" FromRole="venta" ToRole="cliente" />
+          <NavigationProperty Name="trabajador" Relationship="Self.fk_Venta_Trabajador" FromRole="venta" ToRole="trabajador" />
+        </EntityType>
+        <Association Name="fk_Venta_Cliente1">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="1" />
+          <End Role="venta" Type="Self.venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="idCliente" />
+            </Principal>
+            <Dependent Role="venta">
+              <PropertyRef Name="Cliente_idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Venta_Trabajador">
+          <End Role="trabajador" Type="Self.trabajador" Multiplicity="1" />
+          <End Role="venta" Type="Self.venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="trabajador">
+              <PropertyRef Name="rut" />
+            </Principal>
+            <Dependent Role="venta">
+              <PropertyRef Name="Trabajador_rut" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbpizzaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="cliente" EntityType="Self.cliente" />
+          <EntitySet Name="trabajador" EntityType="Self.trabajador" />
+          <EntitySet Name="venta" EntityType="Self.venta" />
+          <AssociationSet Name="fk_Venta_Cliente1" Association="Self.fk_Venta_Cliente1">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="venta" EntitySet="venta" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Venta_Trabajador" Association="Self.fk_Venta_Trabajador">
+            <End Role="trabajador" EntitySet="trabajador" />
+            <End Role="venta" EntitySet="venta" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="dbpizzaModelStoreContainer" CdmEntityContainer="dbpizzaEntities">
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="dbpizzaModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trabajador">
+            <EntityTypeMapping TypeName="dbpizzaModel.trabajador">
+              <MappingFragment StoreEntitySet="trabajador">
+                <ScalarProperty Name="rut" ColumnName="rut" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="venta">
+            <EntityTypeMapping TypeName="dbpizzaModel.venta">
+              <MappingFragment StoreEntitySet="venta">
+                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+                <ScalarProperty Name="tipopizza" ColumnName="tipopizza" />
+                <ScalarProperty Name="tamanopizza" ColumnName="tamanopizza" />
+                <ScalarProperty Name="agregado2" ColumnName="agregado2" />
+                <ScalarProperty Name="tipobebida" ColumnName="tipobebida" />
+                <ScalarProperty Name="tamanobebida" ColumnName="tamanobebida" />
+                <ScalarProperty Name="Trabajador_rut" ColumnName="Trabajador_rut" />
+                <ScalarProperty Name="Cliente_idCliente" ColumnName="Cliente_idCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
